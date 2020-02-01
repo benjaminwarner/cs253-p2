@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <strings.h>
 
 char *pattern;
 int ignore_case = 0;
@@ -12,7 +13,7 @@ void usage(char *s) {
 
 void parse_args(int argc, char *argv[]) {
 	if (argc == 3) {
-		ignore_case = (strcmp(argv[1], "-i") == 0);
+		printf("ignore_case: %d\n", ignore_case);
 		pattern = argv[2];
 	} else if (argc == 2) {
 		pattern = argv[1];
@@ -25,11 +26,16 @@ int main(int argc, char *argv[]) {
 	parse_args(argc, argv);
 	if (strlen(pattern) == 0)
 		usage(argv[0]);
+	#if ignore_case
+		#define str_contains strcasestr
+	#else
+		#define str_contains strstr
+	#endif
 
 	char buffer[256];
 	int match_count = 0;
 	while (fgets(buffer, 256, stdin) != NULL) {
-		if (strstr(buffer, pattern) != NULL) {
+		if (str_contains(buffer, pattern) != NULL) {
 			printf("%s", buffer);
 			match_count++;
 		}
