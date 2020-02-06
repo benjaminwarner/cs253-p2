@@ -13,9 +13,13 @@ void usage(char *s) {
 
 void parse_args(int argc, char *argv[]) {
 	if (argc == 3) {
+		if (strstr(argv[1], "-i") == NULL)
+			usage(argv[0]);
 		ignore_case = 1;
 		pattern = argv[2];
 	} else if (argc == 2) {
+		if (strstr(argv[1], "-i") != NULL)
+			usage(argv[0]);
 		pattern = argv[1];
 	} else {
 		usage(argv[0]);
