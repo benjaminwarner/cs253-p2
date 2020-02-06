@@ -3,8 +3,8 @@ CFLAGS = -Wall -std=c99 -D_GNU_SOURCE
 
 all: match
 
-match: match.c
-	$(CC) $(CFLAGS) match.c -o match
+match: match.o
+	$(CC) $(CFLAGS) match.o -o match
 
 clean:
-	rm match
+	rm match match.o
