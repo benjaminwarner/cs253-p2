@@ -13,7 +13,7 @@ void usage(char *s) {
 
 void parse_args(int argc, char *argv[]) {
 	if (argc == 3) {
-		printf("ignore_case: %d\n", ignore_case);
+		ignore_case = 1;
 		pattern = argv[2];
 	} else if (argc == 2) {
 		pattern = argv[1];
@@ -26,16 +26,17 @@ int main(int argc, char *argv[]) {
 	parse_args(argc, argv);
 	if (strlen(pattern) == 0)
 		usage(argv[0]);
-	#if ignore_case
-		#define str_contains strcasestr
-	#else
-		#define str_contains strstr
-	#endif
 
-	char buffer[256];
+	char buffer[1024];
 	int match_count = 0;
-	while (fgets(buffer, 256, stdin) != NULL) {
-		if (str_contains(buffer, pattern) != NULL) {
+	while (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+		char *found;
+		if (ignore_case) {
+			found = strcasestr(buffer, pattern);
+		} else {
+			found = strstr(buffer, pattern);
+		}
+		if (found != NULL) {
 			printf("%s", buffer);
 			match_count++;
 		}
