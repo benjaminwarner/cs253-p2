@@ -7,7 +7,7 @@ char *pattern;
 int ignore_case = 0;
 
 void usage(char *s) {
-	fprintf(stderr, "Usage: %s [-i] pattern\n", s);
+	fprintf(stderr, "Usage: match [-i] pattern\n");
 	exit(2);
 }
 
